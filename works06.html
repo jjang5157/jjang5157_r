@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제로페이</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/sub.css">
+    <script type="text/javascript" src="./lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="./js/common.js"></script>
+</head>
+<body>
+    <section class="container top_bg">
+        <article class="cont_art top_bg" id="anc_top">
+            <div class="inner_contents">
+                <div class="con_title06">
+                    <div class="lnb">
+                        <ul>
+                            <li><a href="javascript:void(0);" data-target="#anc_color">COLOR</a></li>
+                            <li><a href="javascript:void(0);" data-target="#anc_font">FONT</a></li>
+                            <li><a href="javascript:void(0);" data-target="#anc_frame">WIREFRAME</a></li>
+                            <li><a href="javascript:void(0);" data-target="#anc_design">DESIGN</a></li>
+                        </ul>
+                        <div id="trgArea" class="bg_text"></div>
+                    </div>
+                </div>  
+            </div>
+        </article>
+        <article class="cont_art" id="anc_color">
+            <div class="con_color06">color conceps</div> 
+        </article>
+        <article class="cont_art color_bg" id="anc_font">
+            <div class="con_font06">font conceps</div>  
+        </article>
+        <article class="cont_art" id="anc_frame">
+            <div class="con_frame06">wire frame</div>
+        </article>
+        <article class="cont_art" id="anc_design">
+            <div class="con_design06">design</div> 
+            <div class="con_design0602">design</div> 
+        </article>       
+      
+    </section>  
+
+    <a href="javascript:void(0)" class="btn-close" onclick="javascript:window.close()">창닫기</a>
+    <a href="javascript:void(0)" class="scroll-top-bl" id="top">상단으로 이동</a>
+
+    <script>
+        $(function(){
+            $(window).scrollTop(0);
+            $(window).scroll(function(){
+                
+                var bottom_of_window = $(window).scrollTop();
+        
+                //lnb position control
+                if( bottom_of_window > 799 ) {
+                    $(".lnb").addClass('fix');
+                } else {
+                    $(".lnb").removeClass('fix');
+                }
+        
+                //lnb position control
+                if( bottom_of_window > 800 - 45 && bottom_of_window < 799  ) {
+                    $(".btn-close").css("top", $(".lnb").offset().top - bottom_of_window + 35 );
+                } else if( bottom_of_window >= 800 ) {
+                    $(".btn-close").css("top", 35 );
+                } else {
+                    $(".btn-close").css("top", 90 );
+                }
+        
+                
+        
+            })
+            $(window).scroll(function(){
+                clearTimeout($.data(this, 'scrollTimer'));
+                $.data(this, 'scrollTimer', setTimeout(function() {
+                    // do something
+                    $('.cont_art').each( function(i){
+                        var top_of_object = $(this).offset().top;
+                        var bottom_of_object = top_of_object + $(this).outerHeight();;
+                        var bottom_of_window = $(window).scrollTop();
+                        var trg = $(this).attr("id");
+        
+                        if( bottom_of_window >= top_of_object && bottom_of_window < bottom_of_object ){
+        
+                            $("a[data-target='#"+ trg +"'").addClass("on")
+        
+                            var cont = String($("a[data-target='#"+ trg +"'").text());
+                            trgAreaText(cont);
+                        } else{
+                            $("a[data-target='#"+ trg +"'").removeClass("on")
+                        }
+                    }); 
+                }, 100));
+            })
+        
+            $(".lnb").find("a").click(function(){
+                var trg = $(this).attr("data-target");
+                var moveTo = $(trg).offset().top;
+                
+                $('html, body').animate({scrollTop: moveTo}, 700);
+                
+                //anchor active/deactive
+                $(this).parents("ul:first").find("a").removeClass("on");
+                $(this).addClass("on");
+        
+                var cont = String($(this).text());
+                trgAreaText(cont);
+        
+            })
+            
+            function trgAreaText (cont) {
+                //lnb bg_text control
+                $("#trgArea").text(cont);
+            }
+            
+        
+        })
+    </script>
+</body>
+</html>
